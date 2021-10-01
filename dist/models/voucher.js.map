@@ -1,0 +1,1 @@
+{"version":3,"file":"voucher.js","sourceRoot":"","sources":["../../src/models/voucher.ts"],"names":[],"mappings":";;AACA,MAAM,QAAQ,GAAG,OAAO,CAAC,UAAU,CAAC,CAAC;AAErC,MAAM,aAAa,GAAG,IAAI,QAAQ,CAAC,MAAM,CAAC;IACtC,OAAO,EAAE,CAAC;YACN,IAAI,EAAE,MAAM;SACf,CAAC;IACF,YAAY,EAAE,MAAM;CACvB,CAAC,CAAA;AAEF,kBAAe,QAAQ,CAAC,KAAK,CAAC,SAAS,EAAE,aAAa,CAAC,CAAC"}

@@ -17,27 +17,47 @@ const eventRoutes = (server) => {
     server.route({
         method: 'GET',
         path: '/events',
-        handler: event_1.getEvent
+        options: {
+            description: 'Get event page',
+            tags: ['api'],
+            handler: event_1.getEvent
+        }
     });
     server.route({
         method: 'POST',
         path: '/events',
-        handler: event_1.postEvent
+        options: {
+            description: 'Post new events',
+            tags: ['api'],
+            handler: event_1.postEvent
+        }
     });
     server.route({
         method: 'POST',
         path: '/events/{eventId}/editable/me',
-        handler: event_1.editableEvent
+        options: {
+            description: 'Check event is available to edit',
+            tags: ['api'],
+            handler: event_1.editableEvent
+        }
     });
     server.route({
         method: 'GET',
         path: '/events/{eventId}/editable/edit',
-        handler: event_1.editEvent
+        options: {
+            description: 'Get edit page',
+            tags: ['api'],
+            handler: event_1.editEvent
+        }
     });
     server.route({
         method: 'GET',
         path: '/events/{eventId}/editable/release',
-        handler: event_1.releaseEvent
+        options: {
+            description: 'Release event edited',
+            tags: ['api'],
+            handler: event_1.releaseEvent
+        }
     });
 };
 exports.eventRoutes = eventRoutes;

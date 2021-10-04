@@ -5,7 +5,6 @@ const Vision = require('@hapi/vision');
 const HapiSwagger = require('hapi-swagger');
 
 
-
 import { voucherRoutes } from './routes/voucher';
 import { eventRoutes } from './routes/event';
 
@@ -22,6 +21,7 @@ const swaggerOptions = {
         version: '0.0.1',
     },
 };
+
 
 const plugins = [
     {

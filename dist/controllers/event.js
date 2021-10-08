@@ -97,6 +97,7 @@ const maintainEvent = (request, h) => __awaiter(void 0, void 0, void 0, function
         var eventId = request.params.eventId;
         clearTimeout(timer);
         runTimer(eventId);
+        return h.response('timeout reset!');
     }
     catch (err) {
         return h.response(err).code(500);

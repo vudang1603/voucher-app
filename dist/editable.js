@@ -23,7 +23,7 @@ const checkEditable = function (id, cb) {
                 const addVoucherCode = yield event_1.default.findOneAndUpdate({ _id: id }, {
                     $inc: { userEditor: 1 }
                 }, { session, returnOriginal: false }).then((result) => __awaiter(this, void 0, void 0, function* () {
-                    if (result.userEditor > 1 || result.userEditor < 1) {
+                    if (result.userEditor > 1 || result.userEditor < 0) {
                         yield session.abortTransaction();
                         console.log("Not Allowed.");
                         cb('Not Allowed.');

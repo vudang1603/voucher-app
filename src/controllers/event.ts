@@ -85,6 +85,7 @@ export const maintainEvent = async (request, h) => {
         var eventId = request.params.eventId;
         clearTimeout(timer);
         runTimer(eventId);
+        return h.response('timeout reset!');
     } catch (err) {
         return h.response(err).code(500);
     }

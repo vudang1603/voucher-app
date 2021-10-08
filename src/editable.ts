@@ -10,7 +10,7 @@ export const checkEditable = async function (id, cb) {
             const addVoucherCode = await Event.findOneAndUpdate({_id: id}, {
                 $inc: {userEditor: 1}          
             }, {session, returnOriginal: false}).then(async (result) => {
-                if(result.userEditor > 1 || result.userEditor < 1){
+                if(result.userEditor > 1 || result.userEditor < 0){
                     await session.abortTransaction();
                     console.log("Not Allowed.");
                     cb('Not Allowed.');

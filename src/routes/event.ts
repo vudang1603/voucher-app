@@ -1,6 +1,7 @@
 import {Server} from '@hapi/hapi';
-import {getEvent, postEvent, editEvent, editableEvent, releaseEvent} from '../controllers/event'
+import {getEvent, postEvent, editableEvent, releaseEvent, maintainEvent} from '../controllers/event'
 const Boom = require('@hapi/boom')
+
 
 
 
@@ -45,18 +46,7 @@ export const eventRoutes = (server: Server) => {
         options :{
             description: 'Check event is available to edit',
             tags : ['api'],
-            handler: editableEvent
-        }
-        
-    })
-
-    server.route({
-        method: 'GET',
-        path: '/events/{eventId}/editable/edit',
-        options :{
-            description: 'Get edit page',
-            tags : ['api'],
-            handler: editEvent
+            handler : editableEvent
         }
         
     })
@@ -70,5 +60,15 @@ export const eventRoutes = (server: Server) => {
             handler: releaseEvent
         }
         
+    })
+
+    server.route({
+        method: 'POST',
+        path: '/events/{eventId}/editable/maintain',
+        options :{
+            description: 'Maintain event',
+            tags : ['api'],
+            handler: maintainEvent
+        }  
     })
 }

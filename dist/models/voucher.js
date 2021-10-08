@@ -5,7 +5,8 @@ const voucherSchema = new mongoose.Schema({
     voucher: [{
             type: String
         }],
-    max_quantity: Number
+    max_quantity: Number,
+    voucher_release: Number
 });
 exports.default = mongoose.model('Voucher', voucherSchema);
 //# sourceMappingURL=voucher.js.map

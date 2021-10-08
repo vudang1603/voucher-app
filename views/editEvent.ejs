@@ -14,6 +14,11 @@
             <input type="text" class="form-control" name="content" id="content" value="<%=event.content%>">
             <button type="submit" class="btn btn-primary">Save</button>
         </form>
+        <form action="/events/<%=event.id%>/editable/maintain" method="post">
+            <button type="submit" class="btn btn-primary">maintain</button>
+        </form>
     </div>
+
+    
 </body>
 </html>

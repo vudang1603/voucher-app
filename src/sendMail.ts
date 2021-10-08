@@ -29,14 +29,14 @@ export const sendingEmail = function (email, code) {
     });
 }
 
-function sendMail(email: string, code: string){
+async function sendMail(email: string, code: string){
     var mailOptions = {
         from: 'dang.vunguyen@hdwebsoft.co',
         to: email,
         subject: 'Voucher App',
         text: 'New Voucher code: ' + code
     };
-    transporter.sendMail(mailOptions, function(error, info){
+    await transporter.sendMail(mailOptions, function(error, info){
         if (error) {
           console.log(error);
         } else {

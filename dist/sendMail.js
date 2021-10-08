@@ -40,19 +40,21 @@ const sendingEmail = function (email, code) {
 };
 exports.sendingEmail = sendingEmail;
 function sendMail(email, code) {
-    var mailOptions = {
-        from: 'dang.vunguyen@hdwebsoft.co',
-        to: email,
-        subject: 'Voucher App',
-        text: 'New Voucher code: ' + code
-    };
-    transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-            console.log(error);
-        }
-        else {
-            console.log('Email sent: ' + info.response);
-        }
+    return __awaiter(this, void 0, void 0, function* () {
+        var mailOptions = {
+            from: 'dang.vunguyen@hdwebsoft.co',
+            to: email,
+            subject: 'Voucher App',
+            text: 'New Voucher code: ' + code
+        };
+        yield transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.log(error);
+            }
+            else {
+                console.log('Email sent: ' + info.response);
+            }
+        });
     });
 }
 //# sourceMappingURL=sendMail.js.map

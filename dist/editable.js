@@ -9,50 +9,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addNewVoucher = void 0;
+exports.checkEditable = void 0;
 const mongoose = require('mongoose');
 require('dotenv').config();
 const dbUrl = process.env.DB_URL;
-const clientEmail = 'nguyenvudang.1999@gmail.com';
-const voucher_1 = require("./models/voucher");
-const sendMail_1 = require("./sendMail");
-function makeid(length) {
-    var result = '';
-    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    var charactersLength = characters.length;
-    for (var i = 0; i < length; i++) {
-        result += characters.charAt(Math.floor(Math.random() *
-            charactersLength));
-    }
-    return result;
-}
-const addNewVoucher = function (cb) {
+const event_1 = require("./models/event");
+const checkEditable = function (id, cb) {
     return __awaiter(this, void 0, void 0, function* () {
         const conn = yield mongoose.connect(dbUrl, { useNewUrlParser: true });
         let session = yield conn.startSession();
         try {
-            var newVoucherCode = makeid(15);
             const transactionResults = yield session.withTransaction(() => __awaiter(this, void 0, void 0, function* () {
-                const addVoucherCode = yield voucher_1.default.findOneAndUpdate({}, {
-                    $push: {
-                        voucher: newVoucherCode
-                    },
-                    $inc: { voucher_release: 1 }
+                const addVoucherCode = yield event_1.default.findOneAndUpdate({ _id: id }, {
+                    $inc: { userEditor: 1 }
                 }, { session, returnOriginal: false }).then((result) => __awaiter(this, void 0, void 0, function* () {
-                    if (result.voucher_release > result.max_quantity) {
+                    if (result.userEditor > 1 || result.userEditor < 1) {
                         yield session.abortTransaction();
-                        console.log("Out of Voucher.");
-                        cb('Out of Voucher.');
+                        console.log("Not Allowed.");
+                        cb('Not Allowed.');
                     }
                 }));
             }));
-            if (transactionResults) {
-                (0, sendMail_1.sendingEmail)(clientEmail, newVoucherCode);
-                console.log("New voucher code was successfully created.");
-            }
-            else {
-                console.log("The transaction was intentionally aborted.");
-            }
         }
         catch (e) {
             console.log("The transaction was aborted due to an unexpected error: " + e);
@@ -62,5 +39,5 @@ const addNewVoucher = function (cb) {
         }
     });
 };
-exports.addNewVoucher = addNewVoucher;
-//# sourceMappingURL=transaction.js.map
+exports.checkEditable = checkEditable;
+//# sourceMappingURL=editable.js.map

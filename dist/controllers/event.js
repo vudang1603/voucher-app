@@ -9,16 +9,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.editEvent = exports.releaseEvent = exports.editableEvent = exports.postEvent = exports.getEvent = void 0;
+exports.maintainEvent = exports.releaseEvent = exports.editableEvent = exports.postEvent = exports.getEvent = void 0;
 const event_1 = require("../models/event");
 const Boom = require('@hapi/boom');
-const server_1 = require("../server");
-function checkEditable(id) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const value = yield server_1.cache.get(id);
-        return value;
-    });
-}
+const editable_1 = require("../editable");
 function makeid(length) {
     var result = '';
     var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -29,6 +23,14 @@ function makeid(length) {
     }
     return result;
 }
+let timer;
+const runTimer = (id) => {
+    timer = setTimeout(() => __awaiter(void 0, void 0, void 0, function* () {
+        yield event_1.default.findOneAndUpdate({ _id: id }, {
+            $inc: { userEditor: -1 }
+        });
+    }), 60 * 1000);
+};
 const getEvent = (request, h) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         var event = yield event_1.default.find({});
@@ -54,15 +56,18 @@ const postEvent = (request, h) => __awaiter(void 0, void 0, void 0, function* ()
 exports.postEvent = postEvent;
 const editableEvent = (request, h) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        var eventId = request.params.eventId;
-        var id = makeid(10);
-        const val = yield checkEditable(eventId);
-        if (val) {
-            return h.response('Not Allowed').code(409);
+        const id = request.params.eventId;
+        var error;
+        yield (0, editable_1.checkEditable)(id, function (err) {
+            error = new Error(err);
+        });
+        if (error) {
+            return Boom.boomify(error, { statusCode: 409 });
         }
         else {
-            yield server_1.cache.set(eventId, { Available: false });
-            return h.redirect('/events/' + eventId + '/editable/edit');
+            runTimer(id);
+            var event = yield event_1.default.findOne({ _id: request.params.eventId });
+            return h.view('editEvent', { event: event });
         }
     }
     catch (err) {
@@ -77,7 +82,9 @@ const releaseEvent = (request, h) => __awaiter(void 0, void 0, void 0, function*
         var content = request.query.content;
         event.content = content;
         yield event.save();
-        yield server_1.cache.drop(eventId);
+        yield event_1.default.findOneAndUpdate({ _id: eventId }, {
+            $inc: { userEditor: -1 }
+        });
         return h.redirect('/events');
     }
     catch (err) {
@@ -85,14 +92,15 @@ const releaseEvent = (request, h) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.releaseEvent = releaseEvent;
-const editEvent = (request, h) => __awaiter(void 0, void 0, void 0, function* () {
+const maintainEvent = (request, h) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        var event = yield event_1.default.findOne({ _id: request.params.eventId });
-        return h.view('editEvent', { event: event });
+        var eventId = request.params.eventId;
+        clearTimeout(timer);
+        runTimer(eventId);
     }
     catch (err) {
         return h.response(err).code(500);
     }
 });
-exports.editEvent = editEvent;
+exports.maintainEvent = maintainEvent;
 //# sourceMappingURL=event.js.map

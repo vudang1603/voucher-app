@@ -15,9 +15,20 @@ require('dotenv').config();
 const dbUrl = process.env.DB_URL;
 const agenda = new es_1.Agenda({ db: { address: dbUrl } });
 agenda.define("check db connection", (job) => __awaiter(void 0, void 0, void 0, function* () {
-    mongoose.connect(dbUrl)
-        .then(db => console.log("DB is still connected successfully"))
-        .catch(err => console.log("Error connecting DB: " + err.message));
+    switch (mongoose.connection.readyState) {
+        case 0:
+            console.log('DB disconnected');
+            break;
+        case 1:
+            console.log('DB still connected');
+            break;
+        case 2:
+            console.log('DB still connecting');
+            break;
+        case 3:
+            console.log('DB still connecting');
+            break;
+    }
 }));
 (function () {
     return __awaiter(this, void 0, void 0, function* () {

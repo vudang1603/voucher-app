@@ -19,7 +19,8 @@ export const setMaxQuantity = async (request, h) => {
         const maxQuantity = request.payload.quantity;
         await Voucher.updateOne({},{
             voucher: [],
-            max_quantity: maxQuantity
+            max_quantity: maxQuantity,
+            voucher_release: 0
         }, {upsert: true});
         return h.redirect('/voucher');
     } catch (err) {

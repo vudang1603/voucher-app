@@ -33,7 +33,8 @@ const setMaxQuantity = (request, h) => __awaiter(void 0, void 0, void 0, functio
         const maxQuantity = request.payload.quantity;
         yield voucher_1.default.updateOne({}, {
             voucher: [],
-            max_quantity: maxQuantity
+            max_quantity: maxQuantity,
+            voucher_release: 0
         }, { upsert: true });
         return h.redirect('/voucher');
     }

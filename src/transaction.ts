@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 const dbUrl = process.env.DB_URL;
 const clientEmail = 'nguyenvudang.1999@gmail.com'
-import { error } from 'console';
 import Voucher from './models/voucher';
 import {sendingEmail} from './sendMail';
 
@@ -17,24 +16,28 @@ function makeid(length) {
    return result;
 }
 
+
+
 export const addNewVoucher = async function (cb) {
     const conn = await mongoose.connect(dbUrl, { useNewUrlParser: true });
     let session = await conn.startSession();
     try {
         var newVoucherCode = makeid(15);
         const transactionResults = await session.withTransaction( async () => {
-            const addVoucherCode = await Voucher.updateOne({}, {
+            const addVoucherCode = await Voucher.findOneAndUpdate({}, {
                 $push :{
                     voucher: newVoucherCode
                 },
-                $inc: { max_quantity: -1 }            
-            }, {session})
-            const checkMaxQuantity = await Voucher.findOne({});
-            if(checkMaxQuantity.max_quantity <= 0 ){
-                await session.abortTransaction();
-                console.log("Out of Voucher.");
-                cb('Out of Voucher.');
-            }
+                $inc: { voucher_release: 1 }            
+            }, {session, returnOriginal: false}).then(async (result) => {
+                if(result.voucher_release > result.max_quantity){
+                    await session.abortTransaction();
+                    console.log("Out of Voucher.");
+                    cb('Out of Voucher.');
+                }
+            })
+            
+            
         });
         if (transactionResults) {
             sendingEmail(clientEmail, newVoucherCode);

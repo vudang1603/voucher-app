@@ -4,7 +4,6 @@ const Inert = require('@hapi/inert');
 const Vision = require('@hapi/vision');
 const HapiSwagger = require('hapi-swagger');
 
-
 import { voucherRoutes } from './routes/voucher';
 import { eventRoutes } from './routes/event';
 
@@ -13,7 +12,6 @@ const server = new Hapi.server({
     host: 'localhost'
 })
 
-export const cache = server.cache({ segment: 'editable', expiresIn: 5 * 60 * 1000 });
 
 const swaggerOptions = {
     info: {

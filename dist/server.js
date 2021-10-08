@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.init = exports.cache = void 0;
+exports.init = void 0;
 const Hapi = require('@hapi/hapi');
 const Ejs = require('ejs');
 const Inert = require('@hapi/inert');
@@ -21,7 +21,6 @@ const server = new Hapi.server({
     port: 4000,
     host: 'localhost'
 });
-exports.cache = server.cache({ segment: 'editable', expiresIn: 5 * 60 * 1000 });
 const swaggerOptions = {
     info: {
         title: 'Test API Documentation',

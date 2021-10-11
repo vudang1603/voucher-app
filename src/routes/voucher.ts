@@ -1,5 +1,5 @@
 import {Server} from '@hapi/hapi';
-import {voucherApi, setMaxQuantity, genNewVoucher} from '../controllers/voucher'
+import {voucher} from '../controllers/voucher'
 const Joi = require('joi');
 const fs = require('fs');
 
@@ -10,7 +10,7 @@ export const voucherRoutes = (server: Server) => {
         options :{
             description: 'Get voucher page',
             tags : ['api'],
-            handler: voucherApi
+            handler: voucher.voucherApi
         }
         
     })
@@ -21,7 +21,7 @@ export const voucherRoutes = (server: Server) => {
         options :{
             description: 'Set max quantity voucher',
             tags : ['api'],
-            handler: setMaxQuantity
+            handler: voucher.setMaxQuantity
         }
         
     })
@@ -32,7 +32,7 @@ export const voucherRoutes = (server: Server) => {
         options :{
             description: 'Get new voucher',
             tags : ['api'],
-            handler: genNewVoucher
+            handler: voucher.genNewVoucher
         }
         
     })

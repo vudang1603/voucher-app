@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.eventRoutes = void 0;
 const event_1 = require("../controllers/event");
 const Boom = require('@hapi/boom');
+const Joi = require('joi');
 function makeid(length) {
     var result = '';
     var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -20,7 +21,7 @@ const eventRoutes = (server) => {
         options: {
             description: 'Get event page',
             tags: ['api'],
-            handler: event_1.getEvent
+            handler: event_1.event.getEvent
         }
     });
     server.route({
@@ -29,16 +30,16 @@ const eventRoutes = (server) => {
         options: {
             description: 'Post new events',
             tags: ['api'],
-            handler: event_1.postEvent
+            handler: event_1.event.postEvent
         }
     });
     server.route({
         method: 'POST',
-        path: '/events/{eventId}/editable/me',
+        path: '/events/{eventId}/editable/{userId}',
         options: {
             description: 'Check event is available to edit',
             tags: ['api'],
-            handler: event_1.editableEvent
+            handler: event_1.event.editableEvent
         }
     });
     server.route({
@@ -47,7 +48,7 @@ const eventRoutes = (server) => {
         options: {
             description: 'Release event edited',
             tags: ['api'],
-            handler: event_1.releaseEvent
+            handler: event_1.event.releaseEvent
         }
     });
     server.route({
@@ -56,7 +57,7 @@ const eventRoutes = (server) => {
         options: {
             description: 'Maintain event',
             tags: ['api'],
-            handler: event_1.maintainEvent
+            handler: event_1.event.maintainEvent
         }
     });
 };

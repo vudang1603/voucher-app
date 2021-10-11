@@ -31,6 +31,14 @@ const plugins = [
     {
         plugin: HapiSwagger,
         options: swaggerOptions
+    },
+    { 
+        plugin: require('hapi-server-session'),
+        options: {
+            cookie: {
+                isSecure: false, // never set to false in production
+            },
+        },
     }
 ];
 

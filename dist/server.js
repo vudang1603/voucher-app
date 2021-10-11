@@ -37,6 +37,14 @@ const plugins = [
     {
         plugin: HapiSwagger,
         options: swaggerOptions
+    },
+    {
+        plugin: require('hapi-server-session'),
+        options: {
+            cookie: {
+                isSecure: false, // never set to false in production
+            },
+        },
     }
 ];
 const init = () => __awaiter(void 0, void 0, void 0, function* () {

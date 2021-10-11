@@ -33,21 +33,22 @@ const addNewVoucher = function (cb) {
         try {
             var newVoucherCode = makeid(15);
             const transactionResults = yield session.withTransaction(() => __awaiter(this, void 0, void 0, function* () {
-                const addVoucherCode = yield voucher_1.default.findOneAndUpdate({}, {
+                const addVoucherCode = yield voucher_1.default.updateOne({ $expr: { $lt: ['$voucher_release', '$max_quantity'] } }, {
                     $push: {
                         voucher: newVoucherCode
                     },
                     $inc: { voucher_release: 1 }
-                }, { session, returnOriginal: false }).then((result) => __awaiter(this, void 0, void 0, function* () {
-                    if (result.voucher_release > result.max_quantity) {
-                        yield session.abortTransaction();
-                        console.log("Out of Voucher.");
-                        cb('Out of Voucher.');
-                    }
-                }));
+                }, { session, returnOriginal: false });
+                if (addVoucherCode.modifiedCount > 0) {
+                    (0, sendMail_1.sendingEmail)(clientEmail, newVoucherCode);
+                }
+                else {
+                    yield session.abortTransaction();
+                    console.log("Out of Voucher.");
+                    cb('Out of Voucher.');
+                }
             }));
             if (transactionResults) {
-                (0, sendMail_1.sendingEmail)(clientEmail, newVoucherCode);
                 console.log("New voucher code was successfully created.");
             }
             else {

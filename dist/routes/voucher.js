@@ -11,7 +11,7 @@ const voucherRoutes = (server) => {
         options: {
             description: 'Get voucher page',
             tags: ['api'],
-            handler: voucher_1.voucherApi
+            handler: voucher_1.voucher.voucherApi
         }
     });
     server.route({
@@ -20,7 +20,7 @@ const voucherRoutes = (server) => {
         options: {
             description: 'Set max quantity voucher',
             tags: ['api'],
-            handler: voucher_1.setMaxQuantity
+            handler: voucher_1.voucher.setMaxQuantity
         }
     });
     server.route({
@@ -29,7 +29,7 @@ const voucherRoutes = (server) => {
         options: {
             description: 'Get new voucher',
             tags: ['api'],
-            handler: voucher_1.genNewVoucher
+            handler: voucher_1.voucher.genNewVoucher
         }
     });
 };

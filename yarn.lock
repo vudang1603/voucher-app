@@ -29,7 +29,7 @@
   dependencies:
     "@hapi/hoek" "9.x.x"
 
-"@hapi/b64@5.x.x":
+"@hapi/b64@5.x.x", "@hapi/b64@^5.0.0":
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/@hapi/b64/-/b64-5.0.0.tgz#b8210cbd72f4774985e78569b77e97498d24277d"
   integrity sha512-ngu0tSEmrezoiIaNGG6rRvKOUkUuDdf4XTPnONHGYfSGRmDqPZX5oJL6HAdKTo1UQHECbdB4OzhWrfgVppjHUw==
@@ -440,6 +440,13 @@
     "@types/express-serve-static-core" "^4.17.18"
     "@types/qs" "*"
     "@types/serve-static" "*"
+
+"@types/hapi-server-session@^5.1.2":
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/@types/hapi-server-session/-/hapi-server-session-5.1.2.tgz#e300fe01ce878f5b64af2d2c10c2bafeca92825e"
+  integrity sha512-5LWDCBLN9rMCmUwXowBPGEUJQSTFQoWGr3dX9rY/aq1alcrLFZCG1+arJbjPIa8MgPIzy4tL3IDqJSp7rdEwFg==
+  dependencies:
+    "@types/hapi__hapi" "*"
 
 "@types/hapi__catbox@*":
   version "10.2.4"
@@ -1637,6 +1644,14 @@ handlebars@^4.7.3, handlebars@^4.7.7:
     wordwrap "^1.0.0"
   optionalDependencies:
     uglify-js "^3.1.4"
+
+hapi-server-session@^5.1.2:
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/hapi-server-session/-/hapi-server-session-5.1.2.tgz#3f78d78f529c8c76b15b6d462c4e0bf4c0ba46bc"
+  integrity sha512-E8zruZx/MvbjQCBJZcNU08cNBXm116j/KuVU37fh79OkfuHG2QYWX71GCxihqkY39skog5yYyhX56gEx4xc17g==
+  dependencies:
+    "@hapi/b64" "^5.0.0"
+    "@hapi/hoek" "^9.0.0"
 
 hapi-swagger@^14.2.4:
   version "14.2.4"

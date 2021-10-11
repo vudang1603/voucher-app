@@ -24,23 +24,22 @@ export const addNewVoucher = async function (cb) {
     try {
         var newVoucherCode = makeid(15);
         const transactionResults = await session.withTransaction( async () => {
-            const addVoucherCode = await Voucher.findOneAndUpdate({}, {
+            const addVoucherCode = await Voucher.updateOne({$expr: { $lt: ['$voucher_release', '$max_quantity'] }}, {
                 $push :{
                     voucher: newVoucherCode
                 },
                 $inc: { voucher_release: 1 }            
-            }, {session, returnOriginal: false}).then(async (result) => {
-                if(result.voucher_release > result.max_quantity){
-                    await session.abortTransaction();
-                    console.log("Out of Voucher.");
-                    cb('Out of Voucher.');
-                }
-            })
-            
+            }, {session, returnOriginal: false})
+            if(addVoucherCode.modifiedCount>0){
+                sendingEmail(clientEmail, newVoucherCode);
+            } else {
+                await session.abortTransaction();
+                console.log("Out of Voucher.");
+                cb('Out of Voucher.');
+            }
             
         });
         if (transactionResults) {
-            sendingEmail(clientEmail, newVoucherCode);
             console.log("New voucher code was successfully created.");
         } else {
             console.log("The transaction was intentionally aborted.");

@@ -10,32 +10,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.checkEditable = void 0;
-const mongoose = require('mongoose');
 require('dotenv').config();
 const dbUrl = process.env.DB_URL;
-const event_1 = require("./models/event");
-const checkEditable = function (id, cb) {
+const eventEdit_1 = require("./models/eventEdit");
+const checkEditable = function (eid, uid, cb) {
     return __awaiter(this, void 0, void 0, function* () {
-        const conn = yield mongoose.connect(dbUrl, { useNewUrlParser: true });
-        let session = yield conn.startSession();
-        try {
-            const transactionResults = yield session.withTransaction(() => __awaiter(this, void 0, void 0, function* () {
-                const addVoucherCode = yield event_1.default.findOneAndUpdate({ _id: id }, {
-                    $inc: { userEditor: 1 }
-                }, { session, returnOriginal: false }).then((result) => __awaiter(this, void 0, void 0, function* () {
-                    if (result.userEditor > 1 || result.userEditor < 0) {
-                        yield session.abortTransaction();
-                        console.log("Not Allowed.");
-                        cb('Not Allowed.');
-                    }
-                }));
-            }));
+        const eventFind = yield eventEdit_1.default.findOne({ eventId: eid });
+        if (!eventFind) {
+            const editEvent = new eventEdit_1.default();
+            editEvent.eventId = eid;
+            editEvent.userEdit = uid;
+            yield editEvent.save();
         }
-        catch (e) {
-            console.log("The transaction was aborted due to an unexpected error: " + e);
-        }
-        finally {
-            yield session.endSession();
+        else {
+            cb('Not allowed');
         }
     });
 };

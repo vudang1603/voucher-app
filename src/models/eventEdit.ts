@@ -6,7 +6,7 @@ const eventEdit = new mongoose.Schema({
         unique: true
     },
     userEdit: String,
-    expire_at: {type: Date, default: Date.now, expires: 60} 
+    expire_at: {type: Date, default: Date.now, expires: 5*60} 
 })
 
 
